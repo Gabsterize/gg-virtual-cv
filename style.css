@@ -1,0 +1,95 @@
+/* Custom styles for Inter font and smooth scrolling */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Tailwind CSS @apply directives are processed during build,
+       but for CDN usage, these need to be explicitly written or
+       included in a build process. For a simple CDN setup,
+       we'll keep the direct CSS properties. */
+    background-color: #f9fafb; /* bg-gray-50 */
+    color: #374151; /* text-gray-800 */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+    background-color: #1f2937; /* dark:bg-gray-900 */
+    color: #e5e7eb; /* dark:text-gray-200 */
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 1rem 1.5rem; /* py-4 px-6 */
+    background-color: #dbeafe; /* bg-blue-100 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+    margin-bottom: 1rem; /* mb-4 */
+}
+
+.dark .section-header {
+    background-color: #1e40af; /* dark:bg-blue-800 */
+}
+
+.section-content {
+    padding-left: 1.5rem; /* px-6 */
+    padding-right: 1.5rem; /* px-6 */
+    padding-bottom: 1rem; /* pb-4 */
+}
+
+.section-content.hidden {
+    display: none;
+}
+
+/* Style for dark mode toggle */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 3rem; /* w-12 */
+    height: 1.5rem; /* h-6 */
+    border-radius: 9999px; /* rounded-full */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #ccc; /* Light mode background */
+}
+
+.toggle-switch.dark-mode {
+    background-color: #4a5568; /* Dark mode background */
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 9999px; /* rounded-full */
+    transition: transform 0.3s ease;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 1.25rem; /* h-5 */
+    width: 1.25rem; /* w-5 */
+    left: 0.125rem; /* left-0.5 */
+    bottom: 0.125rem; /* bottom-0.5 */
+    background-color: white;
+    border-radius: 9999px; /* rounded-full */
+    transition: transform 0.3s ease;
+}
+
+input:checked + .slider {
+    background-color: #2196F3; /* Blue when checked */
+}
+
+input:checked + .slider:before {
+    transform: translateX(1.5rem); /* 24px */
+}
