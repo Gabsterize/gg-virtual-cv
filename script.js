@@ -1,71 +1,61 @@
-// JavaScript for interactivity
 document.addEventListener('DOMContentLoaded', () => {
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
-    // Collapsible sections functionality
+    // --- Accessible Section Toggle Functionality ---
     document.querySelectorAll('.section-header').forEach(header => {
-        header.addEventListener('click', () => {
-            const targetId = header.dataset.target;
-            const content = document.getElementById(targetId);
-            const icon = header.querySelector('.toggle-icon');
+        const content = document.getElementById(header.getAttribute('aria-controls'));
+        const icon = header.querySelector('.toggle-icon');
 
-            if (content) {
-                content.classList.toggle('hidden');
-                if (content.classList.contains('hidden')) {
-                    icon.textContent = '+'; // Change icon to plus when collapsed
-                } else {
-                    icon.textContent = '-'; // Change icon to minus when expanded
-                }
-            }
+        header.addEventListener('click', () => {
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            header.setAttribute('aria-expanded', !isExpanded);
+            content.classList.toggle('active');
+
+            // Toggle icon text based on new state
+            icon.textContent = !isExpanded ? '-' : '+';
         });
     });
 
-    // Dark mode toggle functionality
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
+    // --- Animate Skill Bars on Scroll ---
+    const skillsSection = document.querySelector('#skills');
+    const skillItems = document.querySelectorAll('.skill-item');
 
-    // Check for saved dark mode preference
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        body.classList.add('dark');
-        darkModeToggle.querySelector('input').checked = true;
-        darkModeToggle.classList.add('dark-mode');
+    const animateSkills = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                skillItems.forEach(item => {
+                    const level = item.dataset.level;
+                    const skillBar = item.querySelector('.skill-bar');
+                    const skillLevelText = item.querySelector('.skill-level-text');
+
+                    if (skillBar) {
+                        skillBar.style.width = `${level}%`;
+                    }
+                    if (skillLevelText) {
+                        let competency;
+                        const numericLevel = parseInt(level);
+                        if (numericLevel >= 90) {
+                            competency = 'Expert';
+                        } else if (numericLevel >= 80) {
+                            competency = 'Advanced';
+                        } else if (numericLevel >= 65) {
+                            competency = 'Proficient';
+                        } else {
+                            competency = 'Intermediate';
+                        }
+                        skillLevelText.textContent = competency;
+                    }
+                });
+                observer.unobserve(skillsSection); // Animate only once
+            }
+        });
+    };
+
+    const skillsObserver = new IntersectionObserver(animateSkills, {
+        root: null,
+        threshold: 0.2, // Trigger when 20% of the section is visible
+    });
+
+    if (skillsSection) {
+        skillsObserver.observe(skillsSection);
     }
-
-    darkModeToggle.addEventListener('change', () => {
-        if (darkModeToggle.querySelector('input').checked) {
-            body.classList.add('dark');
-            darkModeToggle.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            body.classList.remove('dark');
-            darkModeToggle.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'disabled');
-        }
-    });
-
-    // Initialize all collapsible sections to be collapsed except "About Me"
-    document.querySelectorAll('.section-content').forEach(content => {
-        // Keep "About Me" section open by default
-        if (content.id !== 'about-content') {
-            content.classList.add('hidden');
-            const header = content.previousElementSibling; // Get the header associated with this content
-            if (header && header.querySelector('.toggle-icon')) {
-                header.querySelector('.toggle-icon').textContent = '+';
-            }
-        } else {
-            // Ensure "About Me" section's icon is '-'
-            const header = content.previousElementSibling;
-            if (header && header.querySelector('.toggle-icon')) {
-                header.querySelector('.toggle-icon').textContent = '-';
-            }
-        }
-    });
 });
