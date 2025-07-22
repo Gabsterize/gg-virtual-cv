@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
             content.classList.toggle('active');
 
             // Toggle icon text based on new state
-            icon.textContent = !isExpanded ? '-' : '+';
+            if (icon) {
+              icon.textContent = !isExpanded ? '-' : '+';
+            }
         });
     });
 
