@@ -2,7 +2,7 @@
 body {
     font-family: 'Inter', sans-serif;
     transition: background-color 0.5s ease, color 0.5s ease;
-    background-image: url('background.png'); /* Add the background image */
+    background-image: url('assets/background.jpg'); /* Add the background image */
     background-attachment: fixed; /* Keep it fixed during scroll */
     background-size: cover;
 }
