@@ -2,8 +2,8 @@
 body {
     font-family: 'Inter', sans-serif;
     transition: background-color 0.5s ease, color 0.5s ease;
-    background-image: url('assets/background.jpg'); /* Add the background image */
-    background-attachment: fixed; /* Keep it fixed during scroll */
+    background-image: url('assets/background.jpg'); /* Your background image */
+    background-attachment: fixed;
     background-size: cover;
 }
 
@@ -16,16 +16,42 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- New Two-Column Layout --- */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) { /* Apply two-column layout on larger screens */
+    .main-grid {
+        grid-template-columns: 350px 1fr; /* Left column width, right takes the rest */
+    }
+}
+
+.left-column {
+    position: sticky;
+    top: 1.5rem; /* Corresponds to p-6 in the container */
+    align-self: start; /* Aligns the column to the top */
+    animation: slideInFromLeft 0.8s ease-out;
+}
+
+.right-column {
+    animation: slideInFromRight 0.8s ease-out;
+}
+
+@keyframes slideInFromLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInFromRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+
 /* Header and Navigation Links */
-header {
-    animation: slideInFromTop 0.8s ease-out;
-}
-
-@keyframes slideInFromTop {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 .nav-link {
     @apply font-medium text-lg relative pb-1;
 }
@@ -36,13 +62,14 @@ header {
     width: 0;
     height: 2px;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: theme('colors.sage.500'); /* Base sage for underline */
     transition: width 0.3s ease-in-out;
 }
 
 .nav-link:hover::after {
-    width: 100%;
+    width: 50%;
 }
 
 /* List Item Text Color Fix */
@@ -104,11 +131,11 @@ header {
 }
 
 .skill-bar-container {
-    @apply flex-grow h-6 rounded-full overflow-hidden relative bg-sage-700;
+    @apply flex-grow h-6 rounded-full overflow-hidden relative bg-sage-200 dark:bg-sage-700;
 }
 
 .skill-bar {
-    @apply h-full flex items-center justify-center text-sm font-medium rounded-full bg-sage-600;
+    @apply h-full flex items-center justify-center text-sm font-medium rounded-full bg-sage-500 dark:bg-sage-600;
     transition: width 1s ease-in-out;
     width: 0; /* Start with 0 width */
 }
