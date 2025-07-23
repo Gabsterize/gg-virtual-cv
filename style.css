@@ -27,12 +27,14 @@ body {
     .main-grid {
         grid-template-columns: 350px 1fr; /* Left column width, right takes the rest */
     }
+    .left-column {
+    position: sticky;
+    top: 1.5rem; /* Corresponds to p-6 in the container */
+    align-self: start;
+    }
 }
 
 .left-column {
-    position: sticky;
-    top: 1.5rem; /* Corresponds to p-6 in the container */
-    align-self: start; /* Aligns the column to the top */
     animation: slideInFromLeft 0.8s ease-out;
 }
 
